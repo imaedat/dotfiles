@@ -1,0 +1,38 @@
+vbell on
+vbell_msg ""
+
+bind \\ quit
+bind k kill
+bind I login on
+bind O login off
+bind } history
+bind ^o other
+bind T title
+
+bind ^h prev
+bind l windowlist
+bind ^l windowlist
+bind w windowlist -b
+
+bind g
+bind ^g
+bind x
+bind ^x
+bind h
+bind H
+
+autodetach      on
+#cjkwidth       on
+termcap  facit|vt100|xterm LP:G0
+terminfo facit|vt100|xterm LP:G0
+#termcapinfo cygwin KJ=SJIS
+#defencoding SJIS
+deflogin        on
+defmonitor      off
+defscrollback   40000
+escape ^z^z
+shell /bin/bash
+startup_message off
+#hardstatus alwayslastline "%{= wk}  %-Lw  %25>  %{+b rw}  %n  %f %t  %{-}  %75>  %+Lw  %< %= %Y/%m/%d %c"
+#hardstatus alwayslastline "%{= wk}%-Lw%25>%{+b rw}%n%f %t%{-}%75>%+Lw%< %=%Y/%m/%d %c"
+hardstatus alwayslastline "%{= wk}%-w%25>%{+b rw}%n %t%{-}%75>%+w%< %=%Y/%m/%d %c"
