@@ -68,6 +68,7 @@ else
 endif
 
 imap <C-H> <BS>
+imap <Nul> <Nop>
 vmap g<CR> y/<C-R>"<CR>
 nnoremap <C-L> :noh<CR><C-L>
 nnoremap gn gt
