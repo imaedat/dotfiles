@@ -1,6 +1,6 @@
-def k; return 1024; end
-def m; return k*k;  end
-def g; return m*k;  end
+def k; return 1024.0; end
+def m; return k*k;    end
+def g; return m*k;    end
 
 class Array
   def sum
