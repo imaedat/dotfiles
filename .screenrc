@@ -35,4 +35,4 @@ shell /bin/bash
 startup_message off
 #hardstatus alwayslastline "%{= wk}  %-Lw  %25>  %{+b rw}  %n  %f %t  %{-}  %75>  %+Lw  %< %= %Y/%m/%d %c"
 #hardstatus alwayslastline "%{= wk}%-Lw%25>%{+b rw}%n%f %t%{-}%75>%+Lw%< %=%Y/%m/%d %c"
-hardstatus alwayslastline "%{= wk}%-w%25>%{+b rw}%n %t%{-}%75>%+w%< %=%Y/%m/%d %c"
+hardstatus alwayslastline "%{= wk}%-w%25>%{+b rw}%n %t%{-}%75>%+w%< %=%Y-%m-%d %c"
