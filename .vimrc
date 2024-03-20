@@ -4,6 +4,7 @@ set   background=dark
 set   backspace=indent,eol,start
 set nobackup
 "set   cindent
+set   cinkeys-=0#
 set   cinoptions+=:0
 set   cmdheight=1
 "set   cscopetag
@@ -16,11 +17,13 @@ set   fileencodings=utf-8,eucjp-ms,cp932,iso-2022-jp-3,ucs-bom,default,latin1
 set   fileformats=unix,dos,mac
 "set   foldclose=all
 "set   foldmethod=manual
-set   formatoptions=mMcroql
+"set   formatoptions=mMcroql
+set   formatoptions=qlMB1jp
 set   grepprg=ag\ --no-heading
 set   guioptions+=a
 set   guioptions+=f
 set   guioptions-=T
+set   helplang=ja,en
 set   hlsearch
 set   iminsert=0
 set   imsearch=0
@@ -36,6 +39,8 @@ set   number
 set   report=1
 set   restorescreen
 set   ruler
+set   runtimepath+=$HOME/.vim/vimdoc-ja
+set   scrolloff=2
 "set   shortmess+=I
 set   shortmess=aoOTI
 set   showcmd
@@ -46,7 +51,8 @@ set   smartindent
 set noswapfile
 set   splitbelow
 set   splitright
-set   statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+"set   statusline=%<%f\ %m%r%h%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l,%c%V%8P
+set   statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}%=%l/%L,%c%V%8P
 set   t_vb=
 set   tabpagemax=99
 set   tags+=tags;,.tags;
@@ -61,11 +67,11 @@ set nowrapscan
 
 syntax enable
 
-if $TERM == "xterm-256color"
+"if $TERM == "xterm-256color"
   colorscheme default
-else
-  colorscheme evening
-endif
+"else
+"  colorscheme evening
+"endif
 
 imap <C-H> <BS>
 vmap g<CR> y/<C-R>"<CR>
@@ -270,3 +276,42 @@ function! Navi()
   endif
   cw
 endfunction
+
+
+if has("patch-8.0.0238")
+    " Bracketed Paste Mode対応バージョン(8.0.0238以降)では、特に設定しない
+    " 場合はTERMがxtermの時のみBracketed Paste Modeが使われる。
+    " tmux利用時はTERMがscreenなので、Bracketed Paste Modeを利用するには
+    " 以下の設定が必要となる。
+    if &term =~ "screen"
+        let &t_BE = "\e[?2004h"
+        let &t_BD = "\e[?2004l"
+        exec "set t_PS=\e[200~"
+        exec "set t_PE=\e[201~"
+    endif
+else
+    " 8.0.0210 ～ 8.0.0237 ではVim本体でのBracketed Paste Mode対応の挙動が
+    " 望ましくない(自動インデントが無効にならない)ので、Vim本体側での対応を
+    " 無効にする。
+    if has("patch-8.0.0210")
+        set t_BE=
+    endif
+
+    " Vim本体がBracketed Paste Modeに対応していない時の為の設定。
+    if &term =~ "xterm" || &term =~ "screen"
+        let &t_ti .= "\e[?2004h"
+        let &t_te .= "\e[?2004l"
+
+        function XTermPasteBegin(ret)
+            set pastetoggle=<Esc>[201~
+            set paste
+            return a:ret
+        endfunction
+
+        noremap <special> <expr> <Esc>[200~ XTermPasteBegin("0i")
+        inoremap <special> <expr> <Esc>[200~ XTermPasteBegin("")
+        vnoremap <special> <expr> <Esc>[200~ XTermPasteBegin("c")
+        cnoremap <special> <Esc>[200~ <nop>
+        cnoremap <special> <Esc>[201~ <nop>
+    endif
+endif

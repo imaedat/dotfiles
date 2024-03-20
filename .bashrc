@@ -145,6 +145,7 @@ alias hw="hw --color-line-number '1;33' --color-path '1;35' --color-match '30;43
 alias mktag="ctags -o .tags -R . & cscope -f .cscope.out -Rbqv"
 alias mktagj='ctags -o .tags -R . & find . -name "*.java" | cscope -f .cscope.out -Rbqv -i -'
 
+export SCREENDIR=$HOME/.screen
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 export LESS="-iMRX"
 export GOPATH=$HOME/.go
