@@ -112,8 +112,9 @@ au FileType stp  set sw=4 ts=4 et
 au FileType go set sw=4 ts=4 lcs=tab:\ \ 
 "au BufEnter *.py setlocal indentkeys+=0#
 au FileType python setlocal nosmartindent
+au FileType yaml setlocal indentkeys-=0#
 
-au QuickFixCmdPost *grep* cwindow
+au QuickFixCmdPost *grep*,make cwindow
 
 augroup HighlightTrailingSpaces
   autocmd!
