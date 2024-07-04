@@ -31,6 +31,7 @@ set   laststatus=2
 set   list
 set   listchars=tab:>-,trail:-
 set   matchpairs+=<:>
+set   modeline
 set   number
 "set   paste
 set   report=1
