@@ -134,6 +134,7 @@ augroup MyVimrc
   au FileType vim setlocal sw=2 ts=2 et
   "au BufEnter *.py setlocal indentkeys+=0#
   au FileType python setlocal nosmartindent
+  au FileType yaml setlocal indentkeys-=0#
 augroup END
 
 augroup HighlightTrailingSpaces
