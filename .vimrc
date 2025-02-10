@@ -1,11 +1,15 @@
+set encoding=utf-8
+scriptencoding utf-8
+
 set   ambiwidth=double
 set   autoindent
 set   background=dark
 set   backspace=indent,eol,start
 set nobackup
 "set   cindent
-set   cinkeys-=0#
-set   cinoptions+=:0
+"set   cinkeys-=0#
+set   cinoptions+=:0,l1
+set   complete+=d
 set   cmdheight=1
 "set   cscopetag
 set   cscopetagorder=1
@@ -34,6 +38,7 @@ set   laststatus=2
 set   list
 set   listchars=tab:>-,trail:-
 set   matchpairs+=<:>
+set   modeline
 set   number
 "set   paste
 set   report=1
@@ -104,22 +109,32 @@ nnoremap <S-Down>  <C-w>+<CR>
 "inoremap <silent> <ESC> <ESC>:set iminsert=0<CR>
 nnoremap <silent><expr> * v:count ? '*'
 \ : ':sil exe "keepj norm! *" <Bar> call winrestview(' . string(winsaveview()) . ')<CR>'
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
-"au BufEnter * execute ":lcd " . expand("%:p:h")
-au BufEnter * if &buftype != "terminal" | execute ":lcd " . expand("%:p:h") | endif
+command! Fmt :!sync;sync;sync;clang-format -i --verbose %
+command! Paste :r!cat
+command! Trim :%s/\s\+$//g
 
-au FileType c,cpp set sw=4 ts=4 et lcs=tab:>-
-au FileType c,cpp nnoremap [f my[[?(<CR>:let l=line(".")<CR>:let f=getline(".")<CR>:nohl<CR>`y:delm y<CR>:echo l . "\t" . f<CR>
-au FileType java nnoremap [f my[m?(<CR>:let l=line(".")<CR>:let f=getline(".")<CR>:nohl<CR>`y:delm y<CR>:echo l . f<CR>
-au FileType java set sw=4 ts=4 et
-au FileType make set sw=8 ts=8 noet
-au FileType perl set sw=4 ts=4
-au FileType stp  set sw=4 ts=4 et
-au FileType go set sw=4 ts=4 lcs=tab:\ \ 
-"au BufEnter *.py setlocal indentkeys+=0#
-au FileType python setlocal nosmartindent
+augroup MyVimrc
+  autocmd!
 
-au QuickFixCmdPost *grep* cwindow
+  "au BufEnter * execute ":lcd " . expand("%:p:h")
+  au BufEnter * if &buftype != "terminal" | execute ":lcd " . expand("%:p:h") | endif
+
+  au QuickFixCmdPost *grep*,make cwindow
+
+  au FileType c,cpp set sw=4 ts=4 et lcs=tab:>-
+  au FileType c,cpp nnoremap [f my[[?(<CR>:let l=line(".")<CR>:let f=getline(".")<CR>:nohl<CR>`y:delm y<CR>:echo l . "\t" . f<CR>
+  au FileType java nnoremap [f my[m?(<CR>:let l=line(".")<CR>:let f=getline(".")<CR>:nohl<CR>`y:delm y<CR>:echo l . f<CR>
+  au FileType java set sw=4 ts=4 et
+  au FileType make set sw=8 ts=8 noet
+  au FileType perl set sw=4 ts=4
+  au FileType stp  set sw=4 ts=4 et
+  au FileType go set sw=4 ts=4 lcs=tab:\ \ 
+  au FileType vim setlocal sw=2 ts=2 et
+  "au BufEnter *.py setlocal indentkeys+=0#
+  au FileType python setlocal nosmartindent
+augroup END
 
 augroup HighlightTrailingSpaces
   autocmd!
@@ -127,6 +142,16 @@ augroup HighlightTrailingSpaces
   autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
 augroup END
 
+augroup Binary
+  au!
+  au BufReadPre   *.bin let &bin=1
+  au BufReadPost  *.bin if &bin | %!xxd
+  au BufReadPost  *.bin set ft=xxd | endif
+  au BufWritePre  *.bin if &bin | %!xxd -r
+  au BufWritePre  *.bin endif
+  au BufWritePost *.bin if &bin | %!xxd
+  au BufWritePost *.bin set nomod | endif
+augroup END
 
 filetype plugin indent on
 

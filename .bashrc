@@ -166,6 +166,11 @@ else
   export PATH=$PATH:$HOME/.go/bin
 fi
 
+if [[ -t 0 ]]; then
+  stty stop undef
+  stty start undef
+fi
+
 bak()
 {
   for f in "$@"; do
