@@ -1,0 +1,12 @@
+[delta]
+side-by-side = true
+keep-plus-minus-markers = true
+syntax-theme = none
+file-style = yellow bold reverse
+file-decoration-style = none
+hunk-header-style = yellow bold
+hunk-header-decoration-style = none
+line-numbers-zero-style = white
+minus-style = red bold
+plus-style = green bold
+width = 225

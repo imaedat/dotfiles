@@ -68,9 +68,16 @@ case "$TERM" in
 xterm*|rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
-*)
+###
+screen*)
+    PS1="$(echo -ne '\ek$(basename ${PWD})\e\\\')\[\033[01;32m\]\u@$(hostname -I | cut -d' ' -f1)\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[999C\]\[\033[18D\]\D{%F %T}\n\$ "
     ;;
+*)
+    PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[999C\]\[\033[18D\]\D{%F %T}\n\$ "
+    ;;
+###
 esac
+export PS1
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -123,19 +130,20 @@ fi
 #export ftp_proxy=http://proxy.example.com:8080/
 #export no_proxy=localhost
 
-if [ "x${TERM}" = "xscreen" ]; then
-    PS1="$(echo -ne '\ek$(basename ${PWD})\e\\\')\[\033[01;32m\]\u@$(hostname -I | cut -d' ' -f1)\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[999C\]\[\033[18D\]\D{%F %T}\n\$ "
-else
-    PS1="\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[999C\]\[\033[18D\]\D{%F %T}\n\$ "
-fi
+export LC_ALL=ja_JP.UTF-8
+export LANG=ja_JP.UTF-8
+export LANGUAGE=ja_JP.UTF-8
 
 export HISTTIMEFORMAT='%F %T '
 #export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+export VISUAL="vim"
 
 alias ls='ls -F --color=auto'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias sl="ls"
 alias ..="cd .."
 alias cp="cp -vi"
 alias mv="mv -vi"
@@ -144,44 +152,16 @@ alias ag="ag --color-path '1;35' --noheading --nobreak"
 alias hw="hw --color-line-number '1;33' --color-path '1;35' --color-match '30;43' -i"
 alias mktag="ctags -o .tags -R . & cscope -f .cscope.out -Rbqv"
 alias mktagj='ctags -o .tags -R . & find . -name "*.java" | cscope -f .cscope.out -Rbqv -i -'
+alias delta="delta --config $HOME/.deltarc"
 
 export SCREENDIR=$HOME/.screen
 export RIPGREP_CONFIG_PATH=$HOME/.ripgreprc
 export LESS="-iMRX"
 export GOPATH=$HOME/.go
 
-if echo $PATH | grep -q "$HOME/bin"; then
-  :
-else
-  export PATH=$PATH:$HOME/bin
-fi
-if echo $PATH | grep -q "$HOME/install/bin"; then
-  :
-else
-  export PATH=$PATH:$HOME/install/bin
-fi
-if echo $PATH | grep -q "$HOME/.go/bin"; then
-  :
-else
-  export PATH=$PATH:$HOME/.go/bin
-fi
-
 if [[ -t 0 ]]; then
   stty stop undef
   stty start undef
 fi
-
-bak()
-{
-  for f in "$@"; do
-    mv -vi ${f} ${f}.bak
-  done
-}
-unbak()
-{
-  for f in "$@"; do
-    : # TODO
-  done
-}
 
 # vi: set sw=2 ts=2 et:

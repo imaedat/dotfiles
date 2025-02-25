@@ -73,10 +73,11 @@ set nowrapscan
 syntax enable
 
 "if $TERM == "xterm-256color"
-  colorscheme default
+"  colorscheme default
 "else
 "  colorscheme evening
 "endif
+colorscheme ron
 
 imap <C-H> <BS>
 imap <Nul> <Nop>
@@ -111,7 +112,8 @@ nnoremap <silent><expr> * v:count ? '*'
 \ : ':sil exe "keepj norm! *" <Bar> call winrestview(' . string(winsaveview()) . ')<CR>'
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h').'/' : '%%'
 
-command! Fmt :!sync;sync;sync;clang-format -i --verbose %
+"command! Fmt :!sync;sync;sync;clang-format -i --verbose %
+command! Fmt :!clang-format -i --verbose %
 command! Paste :r!cat
 command! Trim :%s/\s\+$//g
 
