@@ -6,6 +6,7 @@ targets := \
   .gdbinit \
   .irbrc \
   .screenrc \
+  .tigrc \
   .tmux.conf \
   .vimrc \
   \
@@ -14,5 +15,5 @@ targets := \
 install:
 	@cd $(HOME); \
 	for f in $(targets); do \
-		ln -s $(RELPATH)/$$f . || : ; \
+		ln -v -s $(RELPATH)/$$f . 2>/dev/null || : ; \
 	done

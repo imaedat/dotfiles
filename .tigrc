@@ -1,0 +1,16 @@
+set main-view = id date author:width=6 commit-title:graph=yes,refs=yes
+set main-view-date = custom
+set main-view-date-format = "%Y-%m-%d"
+
+set ignore-case =  yes
+set line-graphics = ascii
+set wrap-search = no
+
+bind generic <C-F> move-page-down
+bind generic <C-B> move-page-up
+bind generic F     !git fetch
+bind main    F     !git fetch
+bind generic H     move-first-line
+bind main    H     move-first-line
+bind generic G     move-last-line
+bind main    G     move-last-line
